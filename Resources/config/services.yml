@@ -1,4 +1,10 @@
 services:
-#    ez_language_switcher.example:
-#        class: SmarterSolutions\EzComponents\EzLanguageSwitcherBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    smarter.ezcomponents.language_switcher:
+        class: SmarterSolutions\EzComponents\EzLanguageSwitcherBundle\Services\LanguageSwitcherService
+        arguments:
+            # - @router
+            # - @request
+            # - @ezpublish.translation_helper
+            # - @ezpublish.route_reference.generator
+            - @service_container
+        scope: request
