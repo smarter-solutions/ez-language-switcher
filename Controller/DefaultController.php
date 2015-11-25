@@ -2,7 +2,7 @@
 
 namespace SmarterSolutions\EzComponents\EzLanguageSwitcherBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use eZ\Bundle\EzPublishCoreBundle\Controller;
 
 class DefaultController extends Controller
 {
@@ -10,8 +10,9 @@ class DefaultController extends Controller
     {
         $service = $this->get('smarter.ezcomponents.language_switcher');
 
-        var_dump($this->getRequest()->attributes->all());
-        var_dump($service->getContentLanguages());
+        // var_dump($this->getRequest()->attributes->all());
+        var_dump($this->getRootLocation());
+        var_dump($service->getLanguagesData($this->getRootLocation()));
         exit;
         return $this->render('EzLanguageSwitcherBundle:Default:index.html.twig', array('name' => $name));
     }

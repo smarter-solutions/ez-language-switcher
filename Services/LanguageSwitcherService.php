@@ -7,6 +7,8 @@
  */
 namespace SmarterSolutions\EzComponents\EzLanguageSwitcherBundle\Services;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use eZ\Publish\Core\Repository\Values\Content\Location;
 
 class LanguageSwitcherService
 {
@@ -46,15 +48,46 @@ class LanguageSwitcherService
      */
     private $conversion_map;
 
-    function __construct($container)
+    function __construct(ContainerInterface $container)
     {
         $this->container = $container;
         $this->router = $container->get('router');
         $this->translation_helper = $container->get('ezpublish.translation_helper');
         $this->route_reference_generator = $container->get('ezpublish.route_reference.generator');
         $this->request = $container->get('request');
-        $this->connection = $container->get('ezpublish.persistence.connection');        
+        $this->connection = $container->get('ezpublish.persistence.connection');
         $this->conversion_map = $container->getParameter('ezpublish.locale.conversion_map');
+    }
+
+    public function getLanguagesData(Location $location, $exclude_locale = array())
+    {
+        $language_data = array();
+
+        $query = $this->request->query->all();
+
+        $routeRef = $this->getRefRouter($location);
+
+        foreach ($this->getContentLanguages() as $lang)
+        {
+            $short_locale = $this->translation_helper->getTranslationSiteAccess($lang['locale']);
+
+            if (in_array($lang['locale'], $exclude_locale) || is_null($short_locale))
+            {
+               continue;
+            }
+
+            $routeRef->set('siteaccess',$short_locale);
+
+            $language_data[] = array(
+                'locale' => $lang['locale'],
+                'short_locale' => $short_locale,
+                'path' => $link = $this->router->generate($routeRef,$query),
+                'name' => $lang['name'],
+                'isCurrent' => $this->isCurrentLocale($lang['locale'])
+            );
+        }
+
+        return $language_data;
     }
 
     /**
@@ -77,6 +110,20 @@ class LanguageSwitcherService
         return $statement->fetchAll();
     }
 
+    /**
+     * Valida si el locale que se le pasa es el locale actual del usuario
+     * @param  string  $locale
+     * @return boolean
+     */
+    private function isCurrentLocale($locale)
+    {
+        return $locale == $this->getCurrentEzLocale();
+    }
+
+    /**
+     * Permite validar si el router es valido
+     * @return boolean
+     */
     private function isValidRouter()
     {
         $isValid = false;
@@ -92,7 +139,7 @@ class LanguageSwitcherService
 
     /**
      * Permite obtener los routers de ez_legacy que son traducibles.
-     * @return array()
+     * @return array
      */
     private function getValidEzLegacyPath()
     {
@@ -105,8 +152,8 @@ class LanguageSwitcherService
 
     /**
      * Permite obtener el objeto que peritira generar la url con los routers de eZ Publish
-     * @param  [type] $location [description]
-     * @return [type]           [description]
+     * @param  \eZ\Publish\Core\Repository\Values\Content\Location $location
+     * @return \eZ\Publish\Core\MVC\Symfony\Routing\RouteReference
      */
     private function getRefRouter($location)
     {
