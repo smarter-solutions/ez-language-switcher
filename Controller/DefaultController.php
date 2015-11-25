@@ -10,7 +10,8 @@ class DefaultController extends Controller
     {
         $service = $this->get('smarter.ezcomponents.language_switcher');
 
-        var_dump($service->getCurrentEzLocale());
+        var_dump($this->getRequest()->attributes->all());
+        var_dump($service->getContentLanguages());
         exit;
         return $this->render('EzLanguageSwitcherBundle:Default:index.html.twig', array('name' => $name));
     }
