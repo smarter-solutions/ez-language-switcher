@@ -10,7 +10,7 @@
     },
     "autoload" : {
         "psr-4" : {
-            "SmarterSolutions\\EzComponents\\EzLanguageSwitcherBundle" : ""
+            "SmarterSolutions\\EzComponents\\EzLanguageSwitcherBundle\\" : ""
         }
     }
 }
