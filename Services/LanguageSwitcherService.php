@@ -54,7 +54,7 @@ class LanguageSwitcherService
         $this->router = $container->get('router');
         $this->translation_helper = $container->get('ezpublish.translation_helper');
         $this->route_reference_generator = $container->get('ezpublish.route_reference.generator');
-        $this->request = $container->get('request');
+        $this->request = $container->get('request_stack')->getMasterRequest();
         $this->connection = $container->get('ezpublish.persistence.connection');
         $this->conversion_map = $container->getParameter('ezpublish.locale.conversion_map');
     }
@@ -76,7 +76,7 @@ class LanguageSwitcherService
                continue;
             }
 
-            $routeRef->set('siteaccess',$short_locale);
+            $routeRef->set('siteaccess', $short_locale);
 
             $language_data[] = array(
                 'locale' => $lang['locale'],
