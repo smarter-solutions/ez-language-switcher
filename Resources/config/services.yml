@@ -1,0 +1,10 @@
+services:
+    smarter.ezcomponents.language_switcher:
+        class: SmarterSolutions\EzComponents\EzLanguageSwitcherBundle\Services\LanguageSwitcherService
+        arguments:
+            # - @router
+            # - @request
+            # - @ezpublish.translation_helper
+            # - @ezpublish.route_reference.generator
+            - @service_container
+        scope: request
