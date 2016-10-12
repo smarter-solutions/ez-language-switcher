@@ -81,7 +81,7 @@ class LanguageSwitcherService
             $language_data[] = array(
                 'locale' => $lang['locale'],
                 'short_locale' => $short_locale,
-                'path' => $link = $this->router->generate($routeRef,$query),
+                'path' => $link = $this->router->generate($routeRef,$query,true),
                 'name' => $lang['name'],
                 'isCurrent' => $this->isCurrentLocale($lang['locale'])
             );
