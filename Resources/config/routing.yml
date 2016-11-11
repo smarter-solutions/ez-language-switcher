@@ -1,3 +1,0 @@
-ez_language_switcher_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: EzLanguageSwitcherBundle:Default:index }

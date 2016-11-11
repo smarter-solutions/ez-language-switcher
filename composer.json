@@ -6,8 +6,8 @@
     "type" : "symfony-bundle",
     "minimum-stability": "stable",
     "require" : {
-    	"php": ">=5.3.0",
-        "doctrine/orm": "^2.4"
+        "php": ">=5.3.0",
+        "ezsystems/ezpublish-kernel": "~5.4|>=2014.11"
     },
     "autoload" : {
         "psr-4" : {

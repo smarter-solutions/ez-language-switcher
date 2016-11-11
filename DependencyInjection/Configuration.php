@@ -20,10 +20,21 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('ez_language_switcher');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
-
+        $rootNode
+            ->children()
+                ->arrayNode('names')
+                    ->useAttributeAsKey('key')
+                    ->example(
+                        array(
+                            'esl-ES' => 'Castellano',
+                            'cat-ES' => 'Català',
+                            'eng-GB' => 'English'
+                        )
+                    )
+                    ->prototype('scalar')->end()
+                ->end()
+            ->end()
+        ;
         return $treeBuilder;
     }
 }
